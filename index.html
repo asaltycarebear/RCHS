@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Garrett Stockwell">
+    <!--Update--> <meta name="description" content="RCHS Checklist">
+    <!--Update--> <title>Cleaning Checklist</title>
+    <!--Update--> <link rel="stylesheet" href="styles/styles.css">
+    <!--Update--> <script src="scripts/scripts.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&family=Quantico&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+
+    <h1>Daily Checklist</h1>
+
+    <nav>
+        <button id ="menu" class="hamburger">☰</button>
+        <nav id ="nav-menu">
+            <ul>
+                <li><a href="index.html">Checklist</a></li>
+                <li><a href="record.html">Record</a></li>
+            </ul>
+        </nav>
+    </nav>
+</header>
+    <main>
+        <form>
+            <h2>Trash</h2>
+            <label><input type="checkbox"> 1: Empty trash cans in hallways (liners as needed) – 9 total, including pods</label>
+            <label><input type="checkbox"> 2: Empty trash cans in Main & Aux. Gym (liners as needed)</label>
+            <label><input type="checkbox"> 3: Empty trash cans in Commons (as needed)</label>
+
+            <h2>Floors</h2>
+            <label><input type="checkbox"> 1: Dust mop hard floors in Townsquare, Commons, and back of 9000’s pod</label>
+            <label><input type="checkbox"> 2: Wash hard floors with Zamboni (except Commons)</label>
+            <label><input type="checkbox"> 3: Sweep edges/corners, then wet mop</label>
+            <label><input type="checkbox"> 4: Vacuum all carpeted areas (lower level only)</label>
+            <label><input type="checkbox"> 5: Sweep & wet mop all 5 staircases</label>
+            <label><input type="checkbox"> 6: Main & Aux. Gym – dust mop, run Zamboni on hardwood floors</label>
+
+            <h2>Gym & Commons</h2>
+            <label><input type="checkbox"> 1: Remove trash, wrappers, gum, etc. from bleachers (blower may be used)</label>
+            <label><input type="checkbox"> 2: Wipe down Commons tables after use</label>
+            <label><input type="checkbox"> 3: Set half of Commons tables for next morning</label>
+
+            <h2>Glass & Surfaces</h2>
+            <label><input type="checkbox"> 1: Clean all lower glass doors & windows</label>
+            <label><input type="checkbox"> 2: Clean/wipe partition glass (inside & outside Main Gym)</label>
+            <label><input type="checkbox"> 3: Clean outside partition glass on all classroom doors</label>
+            <label><input type="checkbox"> 4: Wipe down vending machines</label>
+
+            <h2>Fixtures & Misc.</h2>
+            <label><input type="checkbox"> 1: Disinfect & polish drinking fountains (8 total)</label>
+            <label><input type="checkbox"> 2: Take down flags, fold, and place in security office</label>
+
+            <h2>Closing Duties</h2>
+            <label><input type="checkbox"> 1: Turn off lights</label>
+            <label><input type="checkbox"> 2: Close and lock all pod and main entry doors</label>
+            
+            <h2>Additional Notes</h2>
+            <textarea placeholder="Describe other tasks completed..."></textarea>
+
+            <br><br>
+            <button type="submit">Submit Checklist</button>
+        </form>
+    </main>
+    <footer>
+        <p>©️<span id="currentyear"></span> ❖ Garrett Stockwell ❖ Colorado, USA</p>
+        <p id="lastModified"></p>
+    </footer>
+</body>
+</html>

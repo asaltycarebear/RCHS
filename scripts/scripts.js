@@ -1,24 +1,44 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const menuButton = document.querySelector(`#menu`); /*# target id's*/
-    const navMenu = document.querySelector(`#nav-menu`);
+    const menuButton = document.querySelector("#menu");
+    const navMenu = document.querySelector("#nav-menu");
 
-    menuButton.addEventListener("click", () => { /*=> is used in place of function ()*/
-        navMenu.classList.toggle(`open`);
+    if (menuButton) {
+        menuButton.addEventListener("click", () => {
+            navMenu.classList.toggle("open");
+            menuButton.textContent = navMenu.classList.contains("open") ? "✖" : "☰";
+        });
+    }
 
-        /*Toggle*/ 
-        if (navMenu.classList.contains(`open`)) {
-            menuButton.textContent = `✖`;
-        } 
-        else {
-            menuButton.textContent = `☰`;
-        }
+    // === START/STOP TIMERS ===
+    const startButtons = document.querySelectorAll(".startBtn");
+    const stopButtons = document.querySelectorAll(".stopBtn");
+
+    let taskTimers = JSON.parse(localStorage.getItem("taskTimes")) || {};
+
+    startButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const task = btn.dataset.task;
+            taskTimers[task] = { start: new Date().toLocaleString(), end: null };
+            localStorage.setItem("taskTimes", JSON.stringify(taskTimers));
+            alert(`${task} started at ${taskTimers[task].start}`);
+        });
     });
-});
 
-document.addEventListener("DOMContentLoaded", function () {
+    stopButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const task = btn.dataset.task;
+            if (taskTimers[task] && taskTimers[task].start) {
+                taskTimers[task].end = new Date().toLocaleString();
+                localStorage.setItem("taskTimes", JSON.stringify(taskTimers));
+                alert(`${task} stopped at ${taskTimers[task].end}`);
+            } else {
+                alert(`Start ${task} before stopping.`);
+            }
+        });
+    });
+
+    // === FORM SUBMIT (checklist completion) ===
     const form = document.querySelector("form");
-
-    // === Save form submissions ===
     if (form) {
         form.addEventListener("submit", function (e) {
             e.preventDefault();
@@ -33,7 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
             submissions.push({
                 checks: results,
                 notes: notes,
-                date: new Date().toLocaleString()
+                date: new Date().toLocaleString(),
+                times: taskTimers // save start/stop times
             });
 
             localStorage.setItem("cleaningChecklist", JSON.stringify(submissions));
@@ -43,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // === Populate record.html table ===
+    // === Populate record.html ===
     const recordsTable = document.querySelector("#recordsTable tbody");
     if (recordsTable) {
         const submissions = JSON.parse(localStorage.getItem("cleaningChecklist")) || [];
@@ -51,10 +72,12 @@ document.addEventListener("DOMContentLoaded", function () {
         submissions.forEach(entry => {
             const row = document.createElement("tr");
 
+            // Date
             const dateCell = document.createElement("td");
             dateCell.textContent = entry.date || "";
             row.appendChild(dateCell);
 
+            // Checkboxes
             entry.checks.forEach(isChecked => {
                 const td = document.createElement("td");
                 const cb = document.createElement("input");
@@ -65,50 +88,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 row.appendChild(td);
             });
 
+            // Notes
             const notesCell = document.createElement("td");
             notesCell.textContent = entry.notes || "";
             row.appendChild(notesCell);
 
             recordsTable.appendChild(row);
-        });
-    }
 
-    // === Export CSV + Email button ===
-    const exportBtn = document.querySelector("#exportCSV");
-    if (exportBtn) {
-        exportBtn.addEventListener("click", function () {
-            const table = document.querySelector("#recordsTable");
-            let csv = [];
-
-            // Extract table rows
-            const rows = table.querySelectorAll("tr");
-            rows.forEach(row => {
-                let cols = row.querySelectorAll("th, td");
-                let rowData = [];
-                cols.forEach(cell => {
-                    if (cell.querySelector("input[type=checkbox]")) {
-                        rowData.push(cell.querySelector("input").checked ? "✔" : "✘");
-                    } else {
-                        rowData.push(cell.innerText.replace(/,/g, "")); // avoid breaking CSV
-                    }
-                });
-                csv.push(rowData.join(","));
-            });
-
-            // Create CSV blob
-            const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
-            const encodedUri = encodeURI(csvContent);
-
-            // Trigger download
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "cleaning_record.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            // Open email client
-            window.location.href = "mailto:cstockwell@dcsdk12.org?subject=Cleaning%20Record&body=Attached%20is%20the%20CSV%20record.%20Please%20attach%20the%20downloaded%20file.";
+            // Add a second row for task times
+            if (entry.times) {
+                const timeRow = document.createElement("tr");
+                const td = document.createElement("td");
+                td.colSpan = 22; // span full table
+                td.innerHTML = Object.entries(entry.times).map(([task, {start, end}]) => {
+                    return `<strong>${task}:</strong> Start: ${start || "-"}, End: ${end || "-"}`;
+                }).join("<br>");
+                timeRow.appendChild(td);
+                recordsTable.appendChild(timeRow);
+            }
         });
     }
 });

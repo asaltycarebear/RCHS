@@ -109,6 +109,15 @@ max-width: 400px;
 margin: 10% auto;
 }
 
+.button-row {
+    margin-top: 5px; /* space above buttons */
+}
+
+.button-row button {
+    display: inline-block;
+    margin-right: 5px; /* space between Start/Stop */
+}
+
 .soft-divider {
 border: none;
 height: 1px;
